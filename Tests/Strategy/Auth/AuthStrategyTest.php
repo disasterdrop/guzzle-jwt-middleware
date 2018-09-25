@@ -1,11 +1,11 @@
 <?php
 
-namespace Eljam\GuzzleJwt\Tests\Strategy\Auth;
+namespace Musterhaus\GuzzleJwt\Tests\Strategy\Auth;
 
-use Eljam\GuzzleJwt\Strategy\Auth\FormAuthStrategy;
-use Eljam\GuzzleJwt\Strategy\Auth\HttpBasicAuthStrategy;
-use Eljam\GuzzleJwt\Strategy\Auth\JsonAuthStrategy;
-use Eljam\GuzzleJwt\Strategy\Auth\QueryAuthStrategy;
+use Musterhaus\GuzzleJwt\Strategy\Auth\FormAuthStrategy;
+use Musterhaus\GuzzleJwt\Strategy\Auth\HttpBasicAuthStrategy;
+use Musterhaus\GuzzleJwt\Strategy\Auth\JsonAuthStrategy;
+use Musterhaus\GuzzleJwt\Strategy\Auth\QueryAuthStrategy;
 
 /**
  * @author Guillaume Cavavana <guillaume.cavana@gmail.com>

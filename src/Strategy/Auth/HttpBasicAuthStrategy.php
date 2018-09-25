@@ -1,6 +1,6 @@
 <?php
 
-namespace Eljam\GuzzleJwt\Strategy\Auth;
+namespace Musterhaus\GuzzleJwt\Strategy\Auth;
 
 /**
  * @author Guillaume Cavana <guillaume.cavana@gmail.com>

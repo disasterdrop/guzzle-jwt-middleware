@@ -1,10 +1,10 @@
 <?php
 
-namespace Eljam\GuzzleJwt\Tests\Manager;
+namespace Musterhaus\GuzzleJwt\Tests\Manager;
 
-use Eljam\GuzzleJwt\JwtToken;
-use Eljam\GuzzleJwt\Manager\JwtManager;
-use Eljam\GuzzleJwt\Strategy\Auth\QueryAuthStrategy;
+use Musterhaus\GuzzleJwt\JwtToken;
+use Musterhaus\GuzzleJwt\Manager\JwtManager;
+use Musterhaus\GuzzleJwt\Strategy\Auth\QueryAuthStrategy;
 use GuzzleHttp\Client;
 use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Handler\MockHandler;

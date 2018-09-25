@@ -1,9 +1,11 @@
 <?php
 
-namespace Eljam\GuzzleJwt\Manager;
+namespace Musterhaus\GuzzleJwt\Manager;
 
-use Eljam\GuzzleJwt\JwtToken;
-use Eljam\GuzzleJwt\Strategy\Auth\AuthStrategyInterface;
+use Musterhaus\GuzzleJwt\JwtToken;
+use Musterhaus\GuzzleJwt\Persistence\NullTokenPersistence;
+use Musterhaus\GuzzleJwt\Persistence\TokenPersistenceInterface;
+use Musterhaus\GuzzleJwt\Strategy\Auth\AuthStrategyInterface;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\request;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -42,17 +44,19 @@ class JwtManager
     protected $token;
 
     /**
+     * @var TokenPersistenceInterface
+     */
+    protected $tokenPersistence;
+
+    /**
      * Constructor.
      *
-     * @param ClientInterface       $client
+     * @param ClientInterface $client
      * @param AuthStrategyInterface $auth
-     * @param array                 $options
+     * @param array $options
      */
-    public function __construct(
-        ClientInterface $client,
-        AuthStrategyInterface $auth,
-        array $options = []
-    ) {
+    public function __construct(ClientInterface $client, AuthStrategyInterface $auth, array $options = [])
+    {
         $this->client = $client;
         $this->auth = $auth;
 
@@ -61,51 +65,57 @@ class JwtManager
             'token_url' => '/token',
             'timeout' => 1,
             'token_key' => 'token',
+            'refresh_key' => 'refresh_token',
             'expire_key' => 'expires_in',
         ]);
 
         $resolver->setRequired(['token_url', 'timeout']);
 
         $this->options = $resolver->resolve($options);
+        $this->tokenPersistence = new NullTokenPersistence();
     }
 
     /**
      * getToken.
      *
      * @return JwtToken
+     * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function getJwtToken()
     {
-        if ($this->token && $this->token->isValid()) {
-            return $this->token;
+        // If token is not set try to get it from the persistent storage.
+        if ($this->token === null) {
+            $this->token = $this->tokenPersistence->restoreToken();
         }
 
-        $url = $this->options['token_url'];
+        // If token is not set or expired then try to acquire a new one...
+        if ($this->token === null || !$this->token->isValid()) {
+            $this->tokenPersistence->deleteToken();
 
-        $requestOptions = array_merge(
-            $this->getDefaultHeaders(),
-            $this->auth->getRequestOptions()
-        );
+            $url = $this->options['token_url'];
 
-        $response = $this->client->request('POST', $url, $requestOptions);
-        $body = json_decode($response->getBody(), true);
+            $requestOptions = array_merge(
+                $this->getDefaultHeaders(),
+                $this->auth->getRequestOptions()
+            );
 
-        $expiresIn = isset($body[$this->options['expire_key']]) ? $body[$this->options['expire_key']] : null;
+            $response = $this->client->request('POST', $url, $requestOptions);
+            $body = json_decode($response->getBody(), true);
 
-        if ($expiresIn) {
-            $expiration = new \DateTime('now + ' . $expiresIn . ' seconds');
-        } elseif (count($jwtParts = explode('.', $body[$this->options['token_key']])) === 3
-            && is_array($payload = json_decode(base64_decode($jwtParts[1]), true))
-            // https://tools.ietf.org/html/rfc7519.html#section-4.1.4
-            && array_key_exists('exp', $payload)
-        ) {
-            // Manually process the payload part to avoid having to drag in a new library
-            $expiration = new \DateTime('@' . $payload['exp']);
-        } else {
-            $expiration = null;
+            $expiresIn = isset($body[$this->options['expire_key']]) ? $body[$this->options['expire_key']] : null;
+
+            if ($expiresIn) {
+                $expiration = new \DateTime('now + ' . $expiresIn . ' seconds');
+            } elseif (count($jwtParts = explode('.', $body[$this->options['token_key']])) === 3 && is_array($payload = json_decode(base64_decode($jwtParts[1]), true)) && array_key_exists('exp', $payload)) {
+                // Manually process the payload part to avoid having to drag in a new library
+                $expiration = new \DateTime('@' . $payload['exp']);
+            } else {
+                $expiration = null;
+            }
+
+            $this->token = new JwtToken($body[$this->options['token_key']], $expiration);
+            $this->tokenPersistence->saveToken($this->token);
         }
-
-        $this->token = new JwtToken($body[$this->options['token_key']], $expiration);
 
         return $this->token;
     }
@@ -122,5 +132,15 @@ class JwtManager
                 'timeout' => $this->options['timeout'],
             ],
         ];
+    }
+
+    /**
+     * @param TokenPersistenceInterface $tokenPersistence
+     * @return $this
+     */
+    public function setTokenPersistence(TokenPersistenceInterface $tokenPersistence)
+    {
+        $this->tokenPersistence = $tokenPersistence;
+        return $this;
     }
 }

@@ -1,18 +1,18 @@
 {
-    "name": "eljam/guzzle-jwt-middleware",
+    "name": "disasterdrop/guzzle-jwt-middleware",
     "description": "A jwt authentication middleware for guzzle 6",
     "keywords": ["guzzle", "guzzle6", "jwt", "auth", "http", "psr7", "handler", "middleware"],
     "homepage": "https://github.com/eljam/guzzle-jwt-middleware",
     "license": "MIT",
     "authors": [
         {
-            "name": "Guillaume Cavana",
-            "email": "guillaume.cavana@gmail.com"
+            "name": "Sevastian Hübner",
+            "email": "development@tryfailrepeat.de"
         }
     ],
     "autoload" : {
         "psr-4" : {
-            "Eljam\\GuzzleJwt\\" : ["src/", "Tests/"]
+            "Musterhaus\\GuzzleJwt\\" : ["src/", "Tests/"]
         }
     },
     "require-dev": {

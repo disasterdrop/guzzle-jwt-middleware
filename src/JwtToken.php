@@ -1,6 +1,6 @@
 <?php
 
-namespace Eljam\GuzzleJwt;
+namespace Musterhaus\GuzzleJwt;
 
 /**
  * @author Guillaume Cavana <guillaume.cavana@gmail.com>
@@ -12,7 +12,12 @@ class JwtToken
      *
      * @var string
      */
-    private $token;
+    private $accessToken;
+
+    /**
+     * @var string
+     */
+    private $refreshToken;
 
     /**
      * @var \DateTime
@@ -20,25 +25,31 @@ class JwtToken
     private $expiration;
 
     /**
-     * Constructor.
-     *
-     * @param string    $token
-     * @param \DateTime $expiration
+     * JwtToken constructor.
+     * @param $accessToken
+     * @param $refreshToken
+     * @param \DateTime|null $expiration
      */
-    public function __construct($token, \DateTime $expiration = null)
+    public function __construct($accessToken, \DateTime $expiration = null)
     {
-        $this->token = $token;
+        $this->accessToken = $accessToken;
         $this->expiration = $expiration;
     }
 
     /**
-     * getToken.
-     *
      * @return string
      */
-    public function getToken()
+    public function getAccessToken()
     {
-        return $this->token;
+        return $this->accessToken;
+    }
+
+    /**
+     * @return string
+     */
+    public function getRefreshToken()
+    {
+        return $this->refreshToken;
     }
 
     /**

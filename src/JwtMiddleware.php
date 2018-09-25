@@ -1,8 +1,8 @@
 <?php
 
-namespace Eljam\GuzzleJwt;
+namespace Musterhaus\GuzzleJwt;
 
-use Eljam\GuzzleJwt\Manager\JwtManager;
+use Musterhaus\GuzzleJwt\Manager\JwtManager;
 use Psr\Http\Message\RequestInterface;
 
 /**
@@ -23,6 +23,16 @@ class JwtMiddleware
      * @var string
      */
     protected $authorizationHeaderType;
+
+    /**
+     * @var
+     */
+    protected $accessToken;
+
+    /**
+     * @var
+     */
+    protected $rawToken;
 
     /**
      * Constructor.
@@ -47,19 +57,13 @@ class JwtMiddleware
     {
         $manager = $this->jwtManager;
 
-        return function (
-            RequestInterface $request,
-            array $options
-        ) use (
-            $handler,
-            $manager
-        ) {
-            $token = $manager->getJwtToken()->getToken();
+        return function (RequestInterface $request, array $options) use ($handler, $manager) {
+            $token = $manager->getJwtToken()->getAccessToken();
 
             return $handler($request->withHeader(
-                'Authorization',
-                sprintf('%s %s', $this->authorizationHeaderType, $token)
+                'Authorization', sprintf('%s %s', $this->authorizationHeaderType, $token)
             ), $options);
         };
     }
+
 }
