@@ -12,7 +12,7 @@
     ],
     "autoload" : {
         "psr-4" : {
-            "Musterhaus\\GuzzleJwt\\" : ["src/", "Tests/"]
+            "Disasterdrop\\GuzzleJwt\\" : ["src/", "Tests/"]
         }
     },
     "require-dev": {

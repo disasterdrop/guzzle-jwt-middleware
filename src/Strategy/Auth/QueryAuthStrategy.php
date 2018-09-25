@@ -1,6 +1,6 @@
 <?php
 
-namespace Musterhaus\GuzzleJwt\Strategy\Auth;
+namespace Disasterdrop\GuzzleJwt\Strategy\Auth;
 
 use Symfony\Component\OptionsResolver\OptionsResolver;
 

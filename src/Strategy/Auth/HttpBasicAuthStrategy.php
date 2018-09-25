@@ -1,6 +1,6 @@
 <?php
 
-namespace Musterhaus\GuzzleJwt\Strategy\Auth;
+namespace Disasterdrop\GuzzleJwt\Strategy\Auth;
 
 /**
  * @author Guillaume Cavana <guillaume.cavana@gmail.com>

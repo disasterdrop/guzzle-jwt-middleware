@@ -1,12 +1,12 @@
 <?php
 
-namespace Musterhaus\GuzzleJwt\Persistence;
+namespace Disasterdrop\GuzzleJwt\Persistence;
 
-use Musterhaus\GuzzleJwt\JwtToken;
+use Disasterdrop\GuzzleJwt\JwtToken;
 
 /**
  * Interface TokenPersistenceInterface
- * @package Musterhaus\GuzzleJwt\Persistence
+ * @package Disasterdrop\GuzzleJwt\Persistence
  */
 interface TokenPersistenceInterface
 {

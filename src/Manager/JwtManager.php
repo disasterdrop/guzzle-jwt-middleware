@@ -1,11 +1,11 @@
 <?php
 
-namespace Musterhaus\GuzzleJwt\Manager;
+namespace Disasterdrop\GuzzleJwt\Manager;
 
-use Musterhaus\GuzzleJwt\JwtToken;
-use Musterhaus\GuzzleJwt\Persistence\NullTokenPersistence;
-use Musterhaus\GuzzleJwt\Persistence\TokenPersistenceInterface;
-use Musterhaus\GuzzleJwt\Strategy\Auth\AuthStrategyInterface;
+use Disasterdrop\GuzzleJwt\JwtToken;
+use Disasterdrop\GuzzleJwt\Persistence\NullTokenPersistence;
+use Disasterdrop\GuzzleJwt\Persistence\TokenPersistenceInterface;
+use Disasterdrop\GuzzleJwt\Strategy\Auth\AuthStrategyInterface;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\request;
 use Symfony\Component\OptionsResolver\OptionsResolver;

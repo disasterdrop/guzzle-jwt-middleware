@@ -1,8 +1,8 @@
 <?php
 
-namespace Musterhaus\GuzzleJwt;
+namespace Disasterdrop\GuzzleJwt;
 
-use Musterhaus\GuzzleJwt\Manager\JwtManager;
+use Disasterdrop\GuzzleJwt\Manager\JwtManager;
 use Psr\Http\Message\RequestInterface;
 
 /**
