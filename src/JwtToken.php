@@ -53,6 +53,14 @@ class JwtToken
     }
 
     /**
+     * @return \DateTime
+     */
+    public function getExpiration(): \DateTime
+    {
+        return $this->expiration;
+    }
+
+    /**
      * @return bool
      */
     public function isValid()
